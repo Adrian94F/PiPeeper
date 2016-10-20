@@ -4,6 +4,7 @@ from flask import Flask, render_template, Response
 from camera import VideoCamera
 
 app = Flask(__name__)
+app.config['DEBUG'] = True
 
 @app.route('/')
 def index():
@@ -21,4 +22,4 @@ def video_feed():
                     mimetype='multipart/x-mixed-replace; boundary=frame')
 
 if __name__ == '__main__':
-    app.run(host='192.168.1.109', debug=True)
+    app.run(host='0.0.0.0', debug=True)
