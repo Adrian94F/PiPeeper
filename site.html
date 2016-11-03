@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Try jQuery Online</title>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script>
+function send(string){
+    $.post('wysylamy do kontrolera ?string='+string, function(data) {
+     alert(string + data); 
+ });
+}
+</script>
+
+</head>
+<body>
+ <button onclick="send('left')">left</button>
+ <button onclick="send('right')">right</button>
+ <button onclick="send('up')">up</button>
+ <button onclick="send('down')">down</button>
+</body>
+</html>
