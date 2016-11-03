@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 
-from flask import Flask, render_template, Response
+from flask import Flask, render_template, Response, request
 from camera import VideoCamera
+
 
 app = Flask(__name__)
 app.config['DEBUG'] = True
@@ -20,6 +21,10 @@ def gen(camera):
 def video_feed():
     return Response(gen(VideoCamera()),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
+
+@app.route('/control/<string>',methods=['GET','POST'])
+def control(string):
+	return string
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True, passthrough_errors=False)

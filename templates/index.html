@@ -1,9 +1,23 @@
+<!DOCTYPE html>
 <html>
-  <head>
-    <title>PiPeeper</title>
-  </head>
-  <body>
-    <h1>PiPeeper</h1>
-    <img id="bg" src="{{ url_for('video_feed') }}">
-  </body>
+	<head>
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+		<script>
+			function send(string){
+			alert(string);
+				$.post('/control/'+string, function(data) {
+					alert(data);
+ 				});
+			}
+		</script>
+		<title>PiPeeper</title>
+	</head>
+	<body>
+		<h1>PiPeeper</h1>
+		<img id="bg" src="{{ url_for('video_feed') }}">
+		<button onclick="send('left')">left</button>
+		<button onclick="send('right')">right</button>
+		<button onclick="send('up')">up</button>
+		<button onclick="send('down')">down</button>
+	</body>
 </html>
