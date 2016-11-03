@@ -24,7 +24,16 @@ def video_feed():
 
 @app.route('/control/<string>',methods=['GET','POST'])
 def control(string):
-	return string
+	if string == 'up':
+		return 'Ok'
+	if string == 'down':
+		return 'Ok'
+	if string == 'left':
+		return 'Ok'
+	if string == 'right':
+		return 'Ok'
+	else:
+		return 'Bad command'
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', debug=True, passthrough_errors=False)
+    app.run(host='0.0.0.0', debug=True, passthrough_errors=False, threaded=True)
