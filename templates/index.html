@@ -10,19 +10,60 @@
  				});
 			}
 		</script>
+		<style>
+			body {
+				background: #808080; 
+				font-family: verdana; 
+				margin: 0px;
+			}
+			div.header {
+				background: #191919; 
+				height: 100px; 
+				margin: 0px; 
+				padding: 0px;
+			}
+			div.left {
+				background: #404040; 
+				float: left; 
+				width: 140px; 
+				height: calc(100vh - 100px);
+				box-sizing: border-box; 
+				text-align: center;
+			}
+			div.text {
+				padding: 15px;
+				color: white; 
+				text-align: left;
+			}
+			div.button {
+				padding: 10px;
+			}
+			div.right {
+				float: left
+			}
+		</style>
 	</head>
 	<body>
-		<div style="background: #191919; height: 100px; margin: 0px; padding: 0px;">
+		<div class="header">
 			<img src="{{ url_for('static',filename="banner.jpg")}}" style="align: left">
 		</div>
 		<div>
-			<div style="background: #505050; float: left; width: 160px; height: 600px; border: 0">
-				<button style="width: 40px; height: 40px; background: url({{ url_for('static',filename="up.png")}}); border: 0; background-size: 100%; background-size: 40px auto" onclick="send('up')"/>
-				<button style="width: 40px; height: 40px; background: url({{ url_for('static',filename="left.png")}}); border: 0; background-size: 100%; background-size: 40px auto" onclick="send('left')"/>
-				<button style="width: 40px; height: 40px; background: url({{ url_for('static',filename="right.png")}}); border: 0; background-size: 100%; background-size: 40px auto" onclick="send('right')"/>
-				<button style="width: 40px; height: 40px; background: url({{ url_for('static',filename="down.png")}}); border: 0; background-size: 100%; background-size: 40px auto" onclick="send('down')"/>
+			<div class="left">
+				<div class="text">
+					Controls:
+				</div>
+				<div class="button">
+					<button style="width: 60px; height: 60px; background: url({{ url_for('static',filename="up.png")}}); border: 0; background-size: 100%; background-size: 60px auto" onclick="send('up')"/>
+				</div>
+				<div class="button">
+					<button style="width: 60px; height: 60px; background: url({{ url_for('static',filename="left.png")}}); border: 0; background-size: 100%; background-size: 60px auto" onclick="send('left')"/>
+					<button style="width: 60px; height: 60px; background: url({{ url_for('static',filename="right.png")}}); border: 0; background-size: 100%; background-size: 60px auto" onclick="send('right')"/>
+				</div>
+				<div class="button">
+					<button style="width: 60px; height: 60px; background: url({{ url_for('static',filename="down.png")}}); border: 0; background-size: 100%; background-size: 60px auto" onclick="send('down')"/>
+				</div>
 			</div>
-			<div style="float: left">
+			<div class="right">
 				<img src="{{ url_for('video_feed') }}">
 			</div>
 		</div>
