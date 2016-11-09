@@ -5,7 +5,7 @@ from camera import VideoCamera
 
 
 app = Flask(__name__)
-app.config['DEBUG'] = True
+# app.config['DEBUG'] = True
 
 @app.route('/')
 def index():
@@ -36,4 +36,4 @@ def control(string):
 		return 'Bad command'
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', debug=True, passthrough_errors=False, threaded=True)
+    app.run(host='0.0.0.0', port=5000, debug=True, passthrough_errors=False, threaded=True)
