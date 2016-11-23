@@ -14,26 +14,28 @@ import os
 # SERVO #
 #-------#
 
-servos = [0.0, 0.0]
-delta = 0.05
+servos = [100, 100]
+delta = 0.1
+pwm = Adafruit_PCA9685.PCA9685()
 
 def set_servo_pulse(channel, pulse):
-    pulse_length = 1000000    # 1,000,000 us per second
-    pulse_length //= 60       # 60 Hz
-    print('{0}us per period'.format(pulse_length))
-    pulse_length //= 4096     # 12 bits of resolution
-    print('{0}us per bit'.format(pulse_length))
-    pulse *= 1000
-    pulse //= pulse_length
-    pwm.set_pwm(channel, 0, pulse)
+	global pwm
+	pulse_length = 1000000    # 1,000,000 us per second
+	pulse_length //= 60       # 60 Hz
+	#print('{0}us per period'.format(pulse_length))
+	pulse_length //= 4096     # 12 bits of resolution
+	#print('{0}us per bit'.format(pulse_length))
+	pulse *= 1000
+	pulse //= pulse_length
+	pwm.set_pwm(channel, 0, pulse)
 
 def servoHandler(threadName, delay):
-	pwm = Adafruit_PCA9685.PCA9685()
+	global pwm
 	pwm.set_pwm_freq(60)
 	while True:
 		set_servo_pulse(0, servos[0])
 		set_servo_pulse(1, servos[1])
-		time.sleep(0.5)
+		time.sleep(1)
 
 #-------#
 # FLASK #
@@ -64,16 +66,16 @@ def video_feed():
 @app.route('/control/<string>',methods=['GET','POST'])
 def control(string):
 	if string == 'up':
-		servos[0] += delta
+		servos[1] -= delta
 		return 'Ok'
 	if string == 'down':
-		servos[0] -= delta
-		return 'Ok'
-	if string == 'left':
 		servos[1] += delta
 		return 'Ok'
+	if string == 'left':
+		servos[0] += delta
+		return 'Ok'
 	if string == 'right':
-		servos[1] -= delta
+		servos[0] -= delta
 		return 'Ok'
 
 if __name__ == '__main__':
