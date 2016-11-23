@@ -14,28 +14,36 @@ import os
 # SERVO #
 #-------#
 
-servos = [100, 100]
+servos = [1.7,1.3]				# [obrot, pochylenie]
 delta = 0.1
 pwm = Adafruit_PCA9685.PCA9685()
+servoMax = 2.8
+servoMin = 0.7
 
 def set_servo_pulse(channel, pulse):
 	global pwm
-	pulse_length = 1000000    # 1,000,000 us per second
-	pulse_length //= 60       # 60 Hz
+	pulse_length = 1000000		# 1,000,000 us per second
+	pulse_length //= 60			# 60 Hz
 	#print('{0}us per period'.format(pulse_length))
-	pulse_length //= 4096     # 12 bits of resolution
+	pulse_length //= 4096		# 12 bits of resolution
 	#print('{0}us per bit'.format(pulse_length))
 	pulse *= 1000
 	pulse //= pulse_length
-	pwm.set_pwm(channel, 0, pulse)
+	pwm.set_pwm(channel, 0, int(pulse))
 
 def servoHandler(threadName, delay):
-	global pwm
+	global pwm, servos, servoMax, servoMin
 	pwm.set_pwm_freq(60)
 	while True:
-		set_servo_pulse(0, servos[0])
-		set_servo_pulse(1, servos[1])
-		time.sleep(1)
+		for i in range (0, 2):
+			# servos[i] += delta
+			if servos[i] > servoMax:
+				servos[i] = servoMin
+			if servos[i] < servoMin:
+				servos[i] = servoMax
+			set_servo_pulse(i, servos[i])
+			print servos[i]
+		time.sleep(0.5)
 
 #-------#
 # FLASK #
@@ -65,6 +73,7 @@ def video_feed():
 
 @app.route('/control/<string>',methods=['GET','POST'])
 def control(string):
+	global servos, delta
 	if string == 'up':
 		servos[1] -= delta
 		return 'Ok'
