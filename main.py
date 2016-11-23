@@ -17,11 +17,15 @@ servos = [0.0, 0.0]
 def servoHandler(threadName, delay):
 	while True:
 		print "*"
-		time.sleep(1)
+		time.sleep(15)
 
 @app.route('/')
 def index(): 
 	return render_template('index.html')
+
+@app.route('/favicon.ico')
+def favicon():
+	return send_from_directory(os.path.join(app.root_path, 'static'), 'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
 def gen(camera):
 	while True:
