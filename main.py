@@ -22,6 +22,7 @@ delta = 0.05
 pwm = Adafruit_PCA9685.PCA9685()
 servoMax = [2.8,1.9]			# [max obrot, max pochylenie]
 servoMin = [0.7,0.7]			# [min obrot, min pochylenie]
+rotate = -1
 
 def set_servo_pulse(channel, pulse):
 	global pwm
@@ -33,16 +34,17 @@ def set_servo_pulse(channel, pulse):
 	pwm.set_pwm(channel, 0, int(pulse))
 
 def servoHandler(threadName, delay):
-	global pwm, servos, servoMax, servoMin
+	global pwm, servos, servoMax, servoMin, rotate
 	pwm.set_pwm_freq(60)
 	while True:
 		for i in range (0, 2):
-			# servos[i] += delta
+			if rotate > 0:
+				servos[i] += delta
 			lock.acquire()
-			# if servos[i] > servoMax[i]:
-			# 	servos[i] = servoMin[i]
-			# if servos[i] < servoMin[i]:
-			# 	servos[i] = servoMax[i]
+			if servos[i] > servoMax[i]:
+				servos[i] = servoMin[i]
+			if servos[i] < servoMin[i]:
+				servos[i] = servoMax[i]
 			set_servo_pulse(i, servos[i])
 			print servos[i]
 			lock.release()
@@ -76,7 +78,7 @@ def video_feed():
 
 @app.route('/control/<string>',methods=['GET','POST'])
 def control(string):
-	global servos, delta
+	global servos, delta, rotate
 	lock.acquire()
 	if string == 'up':
 		servos[1] -= delta
@@ -86,6 +88,8 @@ def control(string):
 		servos[0] += delta
 	if string == 'right':
 		servos[0] -= delta
+	if string == 'rotate':
+		rotate *= -1
 	lock.release()
 	return 'Ok'
 

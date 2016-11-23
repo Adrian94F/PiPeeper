@@ -62,6 +62,9 @@
 				<div class="button">
 					<button style="width: 60px; height: 60px; background: url({{ url_for('static',filename="down.png")}}); border: 0; background-size: 100%; background-size: 60px auto" onclick="send('down')"/>
 				</div>
+				<div class="button">
+					<button style="width: 60px; height: 60px; background: url({{ url_for('static',filename="rotate.png")}}); border: 0; background-size: 100%; background-size: 60px auto" onclick="send('rotate')"/>
+				</div>
 			</div>
 			<div class="right">
 				<img src="{{ url_for('video_feed') }}">
