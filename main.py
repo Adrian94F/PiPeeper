@@ -2,6 +2,7 @@
 
 from flask import Flask, render_template, Response, request, send_from_directory
 from camera import VideoCamera
+from threading import Lock
 import Adafruit_PCA9685
 import thread
 import smbus
@@ -13,6 +14,8 @@ import os
 #-------#
 # SERVO #
 #-------#
+
+lock = Lock()
 
 servos = [1.7,1.3]				# [obrot, pochylenie]
 delta = 0.05
@@ -34,13 +37,15 @@ def servoHandler(threadName, delay):
 	pwm.set_pwm_freq(60)
 	while True:
 		for i in range (0, 2):
-			servos[i] += delta
-			if servos[i] > servoMax[i]:
-				servos[i] = servoMin[i]
-			if servos[i] < servoMin[i]:
-				servos[i] = servoMax[i]
+			# servos[i] += delta
+			lock.acquire()
+			# if servos[i] > servoMax[i]:
+			# 	servos[i] = servoMin[i]
+			# if servos[i] < servoMin[i]:
+			# 	servos[i] = servoMax[i]
 			set_servo_pulse(i, servos[i])
 			print servos[i]
+			lock.release()
 		time.sleep(0.5)
 
 #-------#
@@ -72,18 +77,17 @@ def video_feed():
 @app.route('/control/<string>',methods=['GET','POST'])
 def control(string):
 	global servos, delta
+	lock.acquire()
 	if string == 'up':
 		servos[1] -= delta
-		return 'Ok'
 	if string == 'down':
 		servos[1] += delta
-		return 'Ok'
 	if string == 'left':
 		servos[0] += delta
-		return 'Ok'
 	if string == 'right':
 		servos[0] -= delta
-		return 'Ok'
+	lock.release()
+	return 'Ok'
 
 if __name__ == '__main__':
 	try:
