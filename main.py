@@ -28,8 +28,6 @@ def set_servo_pulse(channel, pulse):
     pwm.set_pwm(channel, 0, pulse)
 
 def servoHandler(threadName, delay):
-	servo_min = 150 
-	servo_max = 600 
 	pwm = Adafruit_PCA9685.PCA9685()
 	pwm.set_pwm_freq(60)
 	while True:
