@@ -15,18 +15,16 @@ import os
 #-------#
 
 servos = [1.7,1.3]				# [obrot, pochylenie]
-delta = 0.1
+delta = 0.05
 pwm = Adafruit_PCA9685.PCA9685()
-servoMax = 2.8
-servoMin = 0.7
+servoMax = [2.8,1.9]			# [max obrot, max pochylenie]
+servoMin = [0.7,0.7]			# [min obrot, min pochylenie]
 
 def set_servo_pulse(channel, pulse):
 	global pwm
-	pulse_length = 1000000		# 1,000,000 us per second
+	pulse_length = 1000000		# 1,000,000 (us/s)
 	pulse_length //= 60			# 60 Hz
-	#print('{0}us per period'.format(pulse_length))
-	pulse_length //= 4096		# 12 bits of resolution
-	#print('{0}us per bit'.format(pulse_length))
+	pulse_length //= 4096		# 12 bitow rozdzielczosci
 	pulse *= 1000
 	pulse //= pulse_length
 	pwm.set_pwm(channel, 0, int(pulse))
@@ -36,11 +34,11 @@ def servoHandler(threadName, delay):
 	pwm.set_pwm_freq(60)
 	while True:
 		for i in range (0, 2):
-			# servos[i] += delta
-			if servos[i] > servoMax:
-				servos[i] = servoMin
-			if servos[i] < servoMin:
-				servos[i] = servoMax
+			servos[i] += delta
+			if servos[i] > servoMax[i]:
+				servos[i] = servoMin[i]
+			if servos[i] < servoMin[i]:
+				servos[i] = servoMax[i]
 			set_servo_pulse(i, servos[i])
 			print servos[i]
 		time.sleep(0.5)
