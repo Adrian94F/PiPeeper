@@ -25,7 +25,7 @@
 			div.left {
 				background: #404040; 
 				float: left; 
-				width: 150px; 
+				width: 210px; 
 				height: calc(100vh - 100px);
 				box-sizing: border-box; 
 				text-align: center;
@@ -57,13 +57,11 @@
 				</div>
 				<div class="button">
 					<button style="width: 60px; height: 60px; background: url({{ url_for('static',filename="left.png")}}); border: 0; background-size: 100%; background-size: 60px auto" onclick="send('left')"/>
+					<button style="width: 60px; height: 60px; background: url({{ url_for('static',filename="rotate.png")}}); border: 0; background-size: 100%; background-size: 60px auto" onclick="send('center')"/>
 					<button style="width: 60px; height: 60px; background: url({{ url_for('static',filename="right.png")}}); border: 0; background-size: 100%; background-size: 60px auto" onclick="send('right')"/>
 				</div>
 				<div class="button">
 					<button style="width: 60px; height: 60px; background: url({{ url_for('static',filename="down.png")}}); border: 0; background-size: 100%; background-size: 60px auto" onclick="send('down')"/>
-				</div>
-				<div class="button">
-					<button style="width: 60px; height: 60px; background: url({{ url_for('static',filename="rotate.png")}}); border: 0; background-size: 100%; background-size: 60px auto" onclick="send('rotate')"/>
 				</div>
 			</div>
 			<div class="right">

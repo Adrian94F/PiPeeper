@@ -2,9 +2,7 @@
 
 from flask import Flask, render_template, Response, request, send_from_directory
 from camera import VideoCamera
-from threading import Lock
 import Adafruit_PCA9685
-import thread
 import smbus
 import math
 import time
@@ -14,8 +12,6 @@ import os
 #-------#
 # SERVO #
 #-------#
-
-lock = Lock()
 
 servos = [1.7,1.3]				# [obrot, pochylenie]
 delta = 0.05
@@ -32,23 +28,6 @@ def set_servo_pulse(channel, pulse):
 	pulse *= 1000
 	pulse //= pulse_length
 	pwm.set_pwm(channel, 0, int(pulse))
-
-def servoHandler(threadName, delay):
-	global pwm, servos, servoMax, servoMin, rotate
-	pwm.set_pwm_freq(60)
-	while True:
-		for i in range (0, 2):
-			if rotate > 0:
-				servos[i] += delta
-			lock.acquire()
-			if servos[i] > servoMax[i]:
-				servos[i] = servoMin[i]
-			if servos[i] < servoMin[i]:
-				servos[i] = servoMax[i]
-			set_servo_pulse(i, servos[i])
-			print servos[i]
-			lock.release()
-		time.sleep(0.5)
 
 #-------#
 # FLASK #
@@ -79,7 +58,6 @@ def video_feed():
 @app.route('/control/<string>',methods=['GET','POST'])
 def control(string):
 	global servos, delta, rotate
-	lock.acquire()
 	if string == 'up':
 		servos[1] -= delta
 	if string == 'down':
@@ -88,14 +66,19 @@ def control(string):
 		servos[0] += delta
 	if string == 'right':
 		servos[0] -= delta
-	if string == 'rotate':
-		rotate *= -1
-	lock.release()
+	if string == 'center':
+		servos = [1.7,1.3]
+	
+	for i in range (0, 2):
+		if servos[i] > servoMax[i]:
+			servos[i] = servoMin[i]
+		if servos[i] < servoMin[i]:
+			servos[i] = servoMax[i]
+		set_servo_pulse(i, servos[i])
+		print servos[i]
+
 	return 'Ok'
 
 if __name__ == '__main__':
-	try:
-		thread.start_new_thread(servoHandler, ("servoHandler", 0))
-	except:
-		print "Error: unable to start thread"
+	pwm.set_pwm_freq(60)
 	app.run(host='0.0.0.0', port=5000, debug=True, passthrough_errors=False, threaded=True)
