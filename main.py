@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from flask import Flask, render_template, Response, request, send_from_directory
+from flask import Flask, render_template, redirect, url_for, Response, request, send_from_directory
 from camera import VideoCamera
 import Adafruit_PCA9685
 import smbus
@@ -13,7 +13,7 @@ import os
 # SERVO #
 #-------#
 
-servos = [1.7,1.3]				# [obrot, pochylenie]
+servos = [1.7,1.3]			# [obrot, pochylenie]
 delta = 0.05
 pwm = Adafruit_PCA9685.PCA9685()
 servoMax = [2.8,1.9]			# [max obrot, max pochylenie]
@@ -23,7 +23,7 @@ rotate = -1
 def set_servo_pulse(channel, pulse):
 	global pwm
 	pulse_length = 1000000		# 1,000,000 (us/s)
-	pulse_length //= 60			# 60 Hz
+	pulse_length //= 60		# 60 Hz
 	pulse_length //= 4096		# 12 bitow rozdzielczosci
 	pulse *= 1000
 	pulse //= pulse_length
@@ -38,7 +38,7 @@ app.config['DEBUG'] = True
 
 @app.route('/')
 def index(): 
-	return render_template('index.html')
+	return render_template('login.html')
 
 @app.route('/favicon.ico')
 def favicon():

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>PiPeeper</title>
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+		<script>
+			function send(string){
+				$.get('/control/'+string, function(data) {
+					console.log(data);
+ 				});
+			}
+		</script>
+		<style>
+			body {
+				background: #808080; 
+				font-family: verdana; 
+				margin: 0px;
+			}
+			div.header {
+				background: #191919; 
+				height: 100px; 
+				margin: 0px; 
+				padding: 0px;
+			}
+			div.loginbox {
+				background: #e30b5c;
+				text-align: left;
+				float: center; 
+				padding: 30px;
+				width: 300px; 
+				height: 100px;
+			}
+			div.text {
+				padding: 60px;
+				color: white; 
+			}
+		</style>
+	</head>
+	<body>
+		<div class="header">
+			<img src="{{ url_for('static',filename="banner.jpg")}}" style="align: left">
+		</div>
+		<div class="text">
+			<div class="loginbox">
+				<table>
+					<tr>
+						<th>
+							Login
+						</th>
+						<th>
+							<input type="text"/>
+						</th>
+					</tr>
+					<tr>
+						<th>
+							Password
+						</th>
+						<th>
+							<input type="password"/>
+						</th>
+					</tr>
+					<tr>
+						<th>
+						</th>
+						<th>
+							OK!
+						</th>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</body>
+</html>
