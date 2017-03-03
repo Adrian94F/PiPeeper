@@ -27,8 +27,14 @@
 				text-align: left;
 				float: center; 
 				padding: 30px;
-				width: 300px; 
-				height: 100px;
+				width: 175px; 
+			}
+			div.errorbox {
+				background: #191919;
+				text-align: left;
+				float: center; 
+				padding: 30px;
+				width: 175px; 
 			}
 			div.text {
 				padding: 60px;
@@ -42,32 +48,24 @@
 		</div>
 		<div class="text">
 			<div class="loginbox">
-				<table>
-					<tr>
-						<th>
-							Login
-						</th>
-						<th>
-							<input type="text"/>
-						</th>
-					</tr>
-					<tr>
-						<th>
-							Password
-						</th>
-						<th>
-							<input type="password"/>
-						</th>
-					</tr>
-					<tr>
-						<th>
-						</th>
-						<th>
-							OK!
-						</th>
-					</tr>
-				</table>
+				<form action="" method="post">
+					<input type="text" placeholder="Username" name="username" value="{{
+						request.form.username }}">
+					<input type="password" placeholder="Password" name="password" value="{{
+						request.form.password }}">
+					<input class="btn btn-default" type="submit" value="Login">
+				</form>
 			</div>
+			{% if error %}
+				<div class="errorbox">
+					<p>
+						<strong>Error:</strong> 
+					</p>
+					<p>
+						{{ error }} 
+					</p>
+				</div>
+			{% endif %}
 		</div>
 	</body>
 </html>
